@@ -1,8 +1,7 @@
 package com.algaworks.algafood;
 
 import com.algaworks.algafood.model.Cliente;
-import com.algaworks.algafood.notificacao.NotificadorSMS;
-import com.algaworks.algafood.notificacao.interfase.Notificador;
+import com.algaworks.algafood.notificacao.NotificadorEmail;
 import com.algaworks.algafood.service.AtivacaoClienteService;
 
 public class Main {
@@ -11,7 +10,7 @@ public class Main {
 		Cliente joao = new Cliente("João", "joao@xyz.com", "11988774455");
 		Cliente maria = new Cliente("Maria", "maria@xyz.com", "11911223344");
 		
-		Notificador notificador = new NotificadorSMS();
+		NotificadorEmail notificador = new NotificadorEmail();
 		
 		AtivacaoClienteService ativacaoClienteService = new AtivacaoClienteService(notificador);
 		ativacaoClienteService.ativar(joao);

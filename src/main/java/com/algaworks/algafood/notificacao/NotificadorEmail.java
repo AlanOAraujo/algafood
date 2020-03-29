@@ -8,7 +8,6 @@ import com.algaworks.algafood.model.Cliente;
 import com.algaworks.algafood.notificacao.interfase.Notificador;
 import com.algaworks.algafood.service.enums.NivelUrgencia;
 
-@Profile("prod")
 @TipoDeNotificador(NivelUrgencia.SEM_URGENCIA)
 @Component
 public class NotificadorEmail implements Notificador {

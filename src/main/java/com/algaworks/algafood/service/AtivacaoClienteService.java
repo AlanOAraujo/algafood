@@ -1,39 +1,38 @@
 package com.algaworks.algafood.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.algaworks.algafood.annotations.TipoDeNotificador;
+import com.algaworks.algafood.event.publish.ClienteAtivadoEvent;
 import com.algaworks.algafood.model.Cliente;
-import com.algaworks.algafood.notificacao.interfase.Notificador;
-import com.algaworks.algafood.service.enums.NivelUrgencia;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AtivacaoClienteService {
 
-	/*Passando o required dentro do Autowired, estamos informando para o Spring,
-	 * para gerenciar a classe mesmo que o mesmo não esteja sendo gerenciado pelo spring.*/
-	@TipoDeNotificador(NivelUrgencia.URGENTE)
-	@Autowired(required = false) 
-	private Notificador notificador;
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
 
-	@PostConstruct
-	public void init(){
-		System.out.println("Init" + notificador);
-	}
+	/**
+	 * Os metodos Init e Destroy
+	 * é para mostrar o ciclo de vida de nosso bean
+	 * **/
 
-	@PreDestroy
-	public void destroy(){
-		System.out.println("Destroy");
-	}
+	/** Estamos mostrando o ciclo de inicialização da Bean**/
+	//	@PostConstruct
+	//	public void init(){
+	//		System.out.println("Init " + notificador);
+	//	}
+
+	/** Estamos mostrando o ciclo final da via da Bean**/
+	//	@PreDestroy
+	//	public void destroy(){
+	//		System.out.println("Destroy");
+	//	}
 
 	public void ativar(Cliente cliente) {
 		cliente.ativar();
-		
-		this.notificador.notificar(cliente, "Seu Cadastro no sistema está ativo!");
+
+		eventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
 	}
 	
 }

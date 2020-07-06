@@ -9,7 +9,7 @@
         <module name="algafood-api" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="13">
       <module name="algafood-api" target="13" />
     </bytecodeTargetLevel>
   </component>

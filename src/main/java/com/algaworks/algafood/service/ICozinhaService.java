@@ -6,6 +6,13 @@ import java.util.List;
 
 public interface ICozinhaService {
 
-    public List<Cozinha> findAll();
+    Cozinha save(String nomeCozinha);
 
+    List<Cozinha> findAll();
+
+    Cozinha findById(Long id);
+
+    Cozinha update(Cozinha cozinha);
+
+    void delete(Long idCozinha);
 }

@@ -1,8 +1,7 @@
 package com.algaworks.algafood.controller;
 
-import com.algaworks.algafood.model.Cozinha;
-import com.algaworks.algafood.service.ICozinhaService;
-import com.algaworks.algafood.service.impl.CozinhaService;
+import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.infrastructure.service.CozinhaServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -26,7 +25,7 @@ import java.util.List;
 public class CozinhaController {
 
     @Autowired
-    private CozinhaService service;
+    private CozinhaServiceImpl service;
 
     @ApiOperation(value = "Busca todas as cozinhas",
             notes = "Apresenta todos os tipos de cozinhas cadastradas.",

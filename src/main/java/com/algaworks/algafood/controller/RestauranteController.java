@@ -1,8 +1,8 @@
 package com.algaworks.algafood.controller;
 
-import com.algaworks.algafood.model.Cozinha;
-import com.algaworks.algafood.model.Restaurante;
-import com.algaworks.algafood.service.IRestauranteService;
+import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.IRestauranteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

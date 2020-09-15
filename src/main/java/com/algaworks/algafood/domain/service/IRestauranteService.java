@@ -1,6 +1,6 @@
-package com.algaworks.algafood.service;
+package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.model.Restaurante;
+import com.algaworks.algafood.domain.model.Restaurante;
 
 import java.util.List;
 

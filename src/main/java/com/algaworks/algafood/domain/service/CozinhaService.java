@@ -4,9 +4,9 @@ import com.algaworks.algafood.domain.model.Cozinha;
 
 import java.util.List;
 
-public interface ICozinhaService {
+public interface CozinhaService {
 
-    Cozinha save(String nomeCozinha);
+    Cozinha save(Cozinha cozinha);
 
     List<Cozinha> findAll();
 

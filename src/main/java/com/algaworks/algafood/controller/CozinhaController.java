@@ -6,7 +6,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,22 +17,18 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = {"/cozinha"})
+@RequestMapping(value = {CozinhaController.URL})
 @Api(value = "Cozinha", tags = {"Cozinha"})
-@ApiResponses(value = {
-        @ApiResponse(code = 500, message = "Erro da aplicação"),
-        @ApiResponse(code = 401, message = "Não autorizado"),
-        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-        @ApiResponse(code = 404, message = "Recurso não encontrado!")
-})
 public class CozinhaController {
+
+    private static final Logger logger = LoggerFactory.getLogger(CozinhaController.class);
+
+    public static final String URL = "/cozinha";
 
     @Autowired
     private CozinhaServiceImpl service;
 
-    @ApiOperation(value = "Busca todas as cozinhas",
-            notes = "Apresenta todos os tipos de cozinhas cadastradas.",
-            response = Cozinha.class)
+    @ApiOperation(value = "Busca todas as cozinhas", response = Cozinha.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operação realizada com sucesso"),
             @ApiResponse(code = 201, message = "A requisição foi bem sucedida e um novo recurso foi criado como resultado"),
@@ -37,14 +36,13 @@ public class CozinhaController {
             @ApiResponse(code = 403, message = "Acessar o recurso que você estava tentando acessar é proibido"),
             @ApiResponse(code = 404, message = "O recurso que você estava tentando acessar não foi encontrado")
     })
-    @GetMapping(value = "todos")
+    @GetMapping(value = "/findAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Cozinha>> buscaTodos(){
+        logger.debug("Buscando todas as cozinha");
         return ResponseEntity.ok(service.findAll());
     }
 
-    @ApiOperation(value = "Busca todas as cozinhas",
-            notes = "Apresenta todos os tipos de cozinhas cadastradas.",
-            response = Cozinha.class)
+    @ApiOperation(value = "Busca cozinha por id", response = Cozinha.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Operação realizada com sucesso"),
             @ApiResponse(code = 201, message = "A requisição foi bem sucedida e um novo recurso foi criado como resultado"),
@@ -52,28 +50,37 @@ public class CozinhaController {
             @ApiResponse(code = 403, message = "Acessar o recurso que você estava tentando acessar é proibido"),
             @ApiResponse(code = 404, message = "O recurso que você estava tentando acessar não foi encontrado")
     })
-    @PostMapping(value = "salva")
-    public ResponseEntity<Cozinha> save(String nomeCozinha){
-        return ResponseEntity.ok(service.save(nomeCozinha));
-    }
-
-    @ApiOperation(value = "Busca todas as cozinhas",
-            notes = "Apresenta todos os tipos de cozinhas cadastradas.",
-            response = Cozinha.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operação realizada com sucesso"),
-            @ApiResponse(code = 201, message = "A requisição foi bem sucedida e um novo recurso foi criado como resultado"),
-            @ApiResponse(code = 401, message = "Não autorizado para visualizar"),
-            @ApiResponse(code = 403, message = "Acessar o recurso que você estava tentando acessar é proibido"),
-            @ApiResponse(code = 404, message = "O recurso que você estava tentando acessar não foi encontrado")
-    })
-    @GetMapping(value = "findById")
-    public ResponseEntity<Cozinha> findById(Long idCozinha){
+    @GetMapping(value = "/findById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Cozinha> findById(@PathVariable(value = "id") Long idCozinha){
+        logger.debug("Buscando cozinha por ID");
         return ResponseEntity.ok(service.findById(idCozinha));
     }
 
-    @DeleteMapping(value = "delete")
-    public void delete(Long idCozinha){
+    @ApiOperation(value = "Persiste Cozinha", response = Cozinha.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operação realizada com sucesso"),
+            @ApiResponse(code = 201, message = "A requisição foi bem sucedida e um novo recurso foi criado como resultado"),
+            @ApiResponse(code = 401, message = "Não autorizado para visualizar"),
+            @ApiResponse(code = 403, message = "Acessar o recurso que você estava tentando acessar é proibido"),
+            @ApiResponse(code = 404, message = "O recurso que você estava tentando acessar não foi encontrado")
+    })
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Cozinha> save(@RequestBody Cozinha cozinha){
+        logger.debug("Salvando cozinha");
+        return ResponseEntity.ok(service.save(cozinha));
+    }
+
+    @ApiOperation(value = "Deleta Cozinha", response = Cozinha.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operação realizada com sucesso"),
+            @ApiResponse(code = 204, message = "Não há conteúdo para enviar para esta solicitação"),
+            @ApiResponse(code = 401, message = "Não autorizado para visualizar"),
+            @ApiResponse(code = 403, message = "Acessar o recurso que você estava tentando acessar é proibido"),
+    })
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Cozinha> delete(@PathVariable(value = "id") Long idCozinha){
+        logger.debug("Deletando cozinha");
         service.delete(idCozinha);
+        return ResponseEntity.noContent().build();
     }
 }

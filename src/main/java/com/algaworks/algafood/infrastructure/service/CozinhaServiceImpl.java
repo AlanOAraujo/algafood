@@ -1,26 +1,23 @@
 package com.algaworks.algafood.infrastructure.service;
 
 import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.service.ICozinhaService;
-import com.algaworks.algafood.repository.ICozinhaRepository;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.service.CozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service
-public class CozinhaServiceImpl implements ICozinhaService {
+public class CozinhaServiceImpl implements CozinhaService {
 
    @Autowired
-   private ICozinhaRepository repository;
+   private CozinhaRepository repository;
 
    @Override
-   public Cozinha save(String nome) {
-
-      Cozinha cozinha = new Cozinha();
-
-      cozinha.setNome(nome);
-
+   public Cozinha save(Cozinha cozinha) {
       return repository.save(cozinha);
    }
 
@@ -31,7 +28,7 @@ public class CozinhaServiceImpl implements ICozinhaService {
 
    @Override
    public Cozinha findById(Long id) {
-      return repository.findById(id).get();
+      return repository.findById(id);
    }
 
    @Override
@@ -42,6 +39,8 @@ public class CozinhaServiceImpl implements ICozinhaService {
    @Override
    public void delete(Long idCozinha) {
 
-      repository.delete(this.findById(idCozinha));
+      Cozinha cozinha = this.findById(idCozinha);
+
+      repository.delete(cozinha);
    }
 }

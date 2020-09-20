@@ -12,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -39,6 +42,11 @@ public class Restaurante implements Serializable {
     @Column(name = "TAXA_FRETE")
     @ApiModelProperty(value = "Taxa do Frete cobrada pelo restaurante")
     private BigDecimal taxaFrete;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn( name = "ID_COZINHA", nullable = false)
+    @ApiModelProperty(value = "Relacionamente referente a tabela cozinha")
+    private Cozinha cozinha;
 
 }
 

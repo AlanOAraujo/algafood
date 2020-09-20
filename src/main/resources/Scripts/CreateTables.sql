@@ -4,12 +4,15 @@ DROP TABLE TAB_RESTAURANTE CASCADE CONSTRAINTS;
 CREATE TABLE TAB_RESTAURANTE (
     ID_RESTAURANTE SERIAL PRIMARY KEY,
     NM_RESTAURANTE VARCHAR(255) NOT NULL,
-    TAXA_FRETE DECIMAL);
+    TAXA_FRETE DECIMAL,
+    ID_COZINHA BIGINT not null,
+    CONSTRAINT FK_COZINHA FOREIGN KEY(ID_COZINHA) REFERENCES TAB_COZINHA(ID_COZINHA));
 
 comment on table TAB_RESTAURANTE is 'Tabela que armazena as informações dos restaurantes';
 comment on column TAB_RESTAURANTE.ID_RESTAURANTE is 'Identificador da tabela de restaurante';
 comment on column TAB_RESTAURANTE.NM_RESTAURANTE is 'Nome do restaurante';
 comment on column TAB_RESTAURANTE.TAXA_FRETE is 'taxa do frete que o restaurante possui';
+comment on column TAB_RESTAURANTE.ID_COZINHA is 'Identificador do relacionamento com a tabela cozinha';
 
 CREATE SEQUENCE SEQ_TAB_RESTAURANTE
     INCREMENT BY 1

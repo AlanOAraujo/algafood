@@ -12,7 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -34,5 +38,9 @@ public class Cozinha implements Serializable {
     @ApiModelProperty(value = "Nome da cozinha")
     @Column(name = "NM_COZINHA")
     private String nome;
+
+    @OneToMany(mappedBy = "cozinha", fetch = FetchType.EAGER)
+    @ApiModelProperty(hidden = true)
+    private Collection<Restaurante> restaurantes = Collections.emptyList();
 
 }

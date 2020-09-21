@@ -2,8 +2,9 @@ package com.algaworks.algafood.domain.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,14 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@NoArgsConstructor
 @Table(name = "TAB_COZINHA")
 @ApiModel(value = "Cozinha", description = "Representacao em classe da tabela Cozinha")
 public class Cozinha implements Serializable {
@@ -39,8 +40,34 @@ public class Cozinha implements Serializable {
     @Column(name = "NM_COZINHA")
     private String nome;
 
-    @OneToMany(mappedBy = "cozinha", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cozinha")
     @ApiModelProperty(hidden = true)
     private Collection<Restaurante> restaurantes = Collections.emptyList();
 
+    @Builder
+    public Cozinha(Long id,String nome){
+        this.idCozinha = id;
+        this.nome = nome;
+    }
+
+    public Long getIdCozinha() {
+        return idCozinha;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cozinha cozinha = (Cozinha) o;
+        return Objects.equals(idCozinha, cozinha.idCozinha);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idCozinha);
+    }
 }

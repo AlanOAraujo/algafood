@@ -1,19 +1,14 @@
 package com.algaworks.algafood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,6 +16,7 @@ import java.util.Objects;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Getter
 @NoArgsConstructor
 @Table(name = "TAB_COZINHA")
 @ApiModel(value = "Cozinha", description = "Representacao em classe da tabela Cozinha")
@@ -37,10 +33,11 @@ public class Cozinha implements Serializable {
     private Long idCozinha;
 
     @ApiModelProperty(value = "Nome da cozinha")
-    @Column(name = "NM_COZINHA")
+    @Column(name = "NM_COZINHA", nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "cozinha")
+    @JsonIgnore
+    @OneToMany(mappedBy = "cozinha", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @ApiModelProperty(hidden = true)
     private Collection<Restaurante> restaurantes = Collections.emptyList();
 
@@ -48,14 +45,6 @@ public class Cozinha implements Serializable {
     public Cozinha(Long id,String nome){
         this.idCozinha = id;
         this.nome = nome;
-    }
-
-    public Long getIdCozinha() {
-        return idCozinha;
-    }
-
-    public String getNome() {
-        return nome;
     }
 
     @Override

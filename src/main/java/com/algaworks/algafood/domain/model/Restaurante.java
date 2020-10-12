@@ -34,11 +34,11 @@ public class Restaurante implements Serializable {
     @ApiModelProperty(value = "Registro de identificação da classe", hidden = true)
     private Long idRestaurante;
 
-    @Column(name = "NM_RESTAURANTE")
+    @Column(name = "NM_RESTAURANTE", nullable = false)
     @ApiModelProperty(value = "Nome do Restaurante")
     private String nmRestaurante;
 
-    @Column(name = "TAXA_FRETE")
+    @Column(name = "TAXA_FRETE", nullable = false)
     @ApiModelProperty(value = "Taxa do Frete cobrada pelo restaurante")
     private BigDecimal taxaFrete;
 

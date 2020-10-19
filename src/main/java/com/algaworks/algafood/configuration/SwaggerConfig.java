@@ -1,5 +1,8 @@
 package com.algaworks.algafood.configuration;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -10,28 +13,43 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.io.FileReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
+    private static Logger logger = LoggerFactory.getLogger(SwaggerConfig.class);
+
     @Bean
-    public Docket api(){
+    public Docket apiDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .useDefaultResponseMessages(false)
+                .directModelSubstitute(Object.class, void.class)
+                .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(this.apiInfo());
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("PROJETO ALGAFOOD API")
-                .description("Mapeamento dos Endpoints do projeto")
-                .version("V-1.0.0")
-                .termsOfServiceUrl("http://terms-of-services.url")
-                .license("LICENSE")
-                .licenseUrl("http://url-to-license.com")
-                .build();
+        StringBuilder titulo = new StringBuilder();
+        titulo.append("PROJETO DE ESTUDO");
+        StringBuilder version = new StringBuilder();
+        try {
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader("pom.xml"));
+            titulo.append("(");
+            titulo.append(StringUtils.upperCase(model.getArtifactId()));
+            titulo.append(")");
+            version.append("V-").append(model.getVersion());
+        } catch (Exception e) {
+            logger.error("ERRO AO BUSCAR INFO DO POM ");
+        }
+        return new ApiInfoBuilder().title(titulo.toString()).description("Mapeamento dos Endpoints do projeto")
+                .version(version.toString()).termsOfServiceUrl("http://terms-of-services.url").license("LICENSE")
+                .licenseUrl("http://url-to-license.com").build();
     }
 }

@@ -1,31 +1,25 @@
 package com.algaworks.algafood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 @NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "TAB_RESTAURANTE")
 @ApiModel(value = "Restaurante", description = "Representacao em classe da tabela Restaurante")
 public class Restaurante implements Serializable {
-
-    private static final long serialVersionUID = -6771549701497617148L;
 
     @Id
     @SequenceGenerator(sequenceName = "SEQ_TAB_RESTAURANTE", name = "SEQ_TAB_RESTAURANTE", allocationSize = 1)
@@ -47,6 +41,13 @@ public class Restaurante implements Serializable {
     @ApiModelProperty(value = "Relacionamente referente a tabela cozinha")
     private Cozinha cozinha;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name="Restaurante",
+            joinColumns=@JoinColumn(name="idRestaurante"),
+            inverseJoinColumns = @JoinColumn(name="idFormaPagamento"))
+    private Collection<FormaPagamento> formasPagamento = Collections.emptyList();
+
     @Builder
     public Restaurante(Long idRestaurante, String nmRestaurante, BigDecimal taxaFrete) {
         this.idRestaurante = idRestaurante;
@@ -54,26 +55,14 @@ public class Restaurante implements Serializable {
         this.taxaFrete = taxaFrete;
     }
 
-    public Long getIdRestaurante() {
-        return idRestaurante;
-    }
-
-    public String getNmRestaurante() {
-        return nmRestaurante;
-    }
-
-    public BigDecimal getTaxaFrete() {
-        return taxaFrete;
-    }
-
-    public Cozinha getCozinha() {
-        return cozinha;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Restaurante that = (Restaurante) o;
         return Objects.equals(idRestaurante, that.idRestaurante);
     }

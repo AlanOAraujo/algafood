@@ -21,7 +21,7 @@ import java.util.Objects;
 @ApiModel(value = "Cozinha", description = "Representacao em classe da tabela Cozinha")
 public class Cozinha implements Serializable {
 
-    private static final long serialVersionUID = -7911272381270147884L;
+    private static final long serialVersionUID = 7207047107066680404L;
 
     @Id
     @EqualsAndHashCode.Include

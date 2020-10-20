@@ -21,6 +21,8 @@ import java.util.Objects;
 @ApiModel(value = "Restaurante", description = "Representacao em classe da tabela Restaurante")
 public class Restaurante implements Serializable {
 
+    private static final long serialVersionUID = -3173617935748141842L;
+
     @Id
     @SequenceGenerator(sequenceName = "SEQ_TAB_RESTAURANTE", name = "SEQ_TAB_RESTAURANTE", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TAB_RESTAURANTE")
@@ -42,11 +44,9 @@ public class Restaurante implements Serializable {
     private Cozinha cozinha;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name="Restaurante",
-            joinColumns=@JoinColumn(name="idRestaurante"),
-            inverseJoinColumns = @JoinColumn(name="idFormaPagamento"))
-    private Collection<FormaPagamento> formasPagamento = Collections.emptyList();
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ApiModelProperty(hidden = true)
+    private Collection<RestauranteFormaPagamento> pagamentos = Collections.emptyList();
 
     @Builder
     public Restaurante(Long idRestaurante, String nmRestaurante, BigDecimal taxaFrete) {

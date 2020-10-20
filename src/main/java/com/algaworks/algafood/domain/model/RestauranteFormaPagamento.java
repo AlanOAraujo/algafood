@@ -27,6 +27,8 @@ import java.util.Objects;
         description = "Representacao em classe da tabela Restaurante Forma de Pagamento")
 public class RestauranteFormaPagamento implements Serializable {
 
+    private static final long serialVersionUID = -1169724614593213140L;
+
     @Id
     @SequenceGenerator(sequenceName = "SEQ_TAB_REST_FORM_PAG", name = "SEQ_TAB_REST_FORM_PAG", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TAB_REST_FORM_PAG")

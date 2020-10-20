@@ -21,6 +21,8 @@ import java.util.Objects;
 @ApiModel(value = "FormaPagamento", description = "Representacao em classe da tabela Forma de Pagamento")
 public class FormaPagamento implements Serializable {
 
+    private static final long serialVersionUID = -8462070188794008919L;
+
     @Id
     @EqualsAndHashCode.Include
     @ApiModelProperty(value = "Registro de identificação da classe", hidden = true)
@@ -34,7 +36,7 @@ public class FormaPagamento implements Serializable {
     private String descricao;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "restauranteFormapagamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "formaPagamento", cascade = CascadeType.ALL, orphanRemoval = true)
     @ApiModelProperty(hidden = true)
     private Collection<RestauranteFormaPagamento> restaurantes = Collections.emptyList();
 
